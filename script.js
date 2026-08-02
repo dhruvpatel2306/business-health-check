@@ -813,9 +813,12 @@ function renderExpenseChart() {
       labels: ['Rent', 'Salaries', 'Marketing', 'Other'],
       datasets: [{
         data: [categories.rent, categories.salaries, categories.marketing, categories.other],
-        backgroundColor: ['#2f4f3a', '#a3453a', '#c9a227', '#4a4a4a']
+        backgroundColor: ['#e8836b', '#f0a875', '#d9714f', '#f5c294'],
+        borderColor: '#faf3ea',
+        borderWidth: 2
       }]
     },
+    
     options: {
       responsive: true,
       plugins: {

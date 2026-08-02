@@ -437,3 +437,17 @@ button {
   color: #a3453a;
   border-color: rgba(163, 69, 58, 0.25);
 }
+#trend-chart {
+  width: 100% !important;
+  height: 280px !important;
+  max-height: 280px;
+}
+
+#expense-chart {
+  width: 100% !important;
+  max-width: 340px !important;
+  height: 340px !important;
+  max-height: 340px;
+  margin: 0 auto !important;
+  display: block !important;
+}
