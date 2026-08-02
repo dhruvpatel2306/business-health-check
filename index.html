@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Business Health Check</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://js.puter.com/v2/"></script>
@@ -10,147 +12,170 @@
 </head>
 <body>
 
-  <h1>Business Health Check</h1>
+  <div class="page-container">
 
-  <form id="metrics-form">
-    <label>
-      Month Label (e.g. "January 2026")
-      <input type="text" id="month-label" placeholder="January 2026" required>
-    </label>
+    <h1>Business Health Check</h1>
 
-    <label>
-      Business Type
-      <select id="business-type" required>
-        <option value="">Select type</option>
-        <option value="retail">Retail</option>
-        <option value="saas">SaaS / Software</option>
-        <option value="restaurant">Restaurant / Food</option>
-        <option value="services">Professional Services</option>
-      </select>
-    </label>
-
-    <label>
-      Monthly Revenue (₹)
-      <input type="number" id="revenue" min="0" required>
-    </label>
-
-    <fieldset>
-      <legend>Monthly Expenses by Category (₹)</legend>
+    <form id="metrics-form" class="card">
       <label>
-        Rent
-        <input type="number" id="exp-rent" min="0" value="0">
+        Month Label (e.g. "January 2026")
+        <input type="text" id="month-label" placeholder="January 2026" required>
       </label>
+
       <label>
-        Salaries
-        <input type="number" id="exp-salaries" min="0" value="0">
+        Business Type
+        <select id="business-type" required>
+          <option value="">Select type</option>
+          <option value="retail">Retail</option>
+          <option value="saas">SaaS / Software</option>
+          <option value="restaurant">Restaurant / Food</option>
+          <option value="services">Professional Services</option>
+        </select>
       </label>
+
       <label>
-        Marketing
-        <input type="number" id="exp-marketing" min="0" value="0">
+        Monthly Revenue (₹)
+        <input type="number" id="revenue" min="0" required>
       </label>
+
+      <fieldset>
+        <legend>Monthly Expenses by Category (₹)</legend>
+        <label>
+          Rent
+          <input type="number" id="exp-rent" min="0" value="0">
+        </label>
+        <label>
+          Salaries
+          <input type="number" id="exp-salaries" min="0" value="0">
+        </label>
+        <label>
+          Marketing
+          <input type="number" id="exp-marketing" min="0" value="0">
+        </label>
+        <label>
+          Other
+          <input type="number" id="exp-other" min="0" value="0">
+        </label>
+      </fieldset>
+
       <label>
-        Other
-        <input type="number" id="exp-other" min="0" value="0">
+        Outstanding Receivables (₹)
+        <input type="number" id="receivables" min="0" required>
       </label>
-    </fieldset>
 
-    <label>
-      Outstanding Receivables (₹)
-      <input type="number" id="receivables" min="0" required>
-    </label>
+      <label>
+        Current Cash Balance (₹)
+        <input type="number" id="cash-balance" min="0" required>
+      </label>
 
-    <label>
-      Current Cash Balance (₹)
-      <input type="number" id="cash-balance" min="0" required>
-    </label>
+      <label>
+        Notes (customer complaints, concerns, anything relevant)
+        <textarea id="notes" rows="3" placeholder="Optional notes..."></textarea>
+      </label>
 
-    <label>
-      Notes (customer complaints, concerns, anything relevant)
-      <textarea id="notes" rows="3" placeholder="Optional notes..."></textarea>
-    </label>
-
-    <div class="voice-row">
-      <button type="button" id="voice-btn">🎤 Speak an entry (e.g. "20000 rent", "note customer complained about delays")</button>
-      <div id="voice-status"></div>
-    </div>
-
-    <button type="submit">Calculate Health</button>
-  </form>
-
-  <div id="results" class="hidden">
-    <h2>Your Business Health</h2>
-
-    <div class="score-box">
-      <span id="health-score">--</span>
-      <span class="score-label">/ 100</span>
-    </div>
-
-    <div class="metric-grid">
-      <div class="metric">
-        <span class="metric-label">Profit Margin</span>
-        <span id="profit-margin" class="metric-value">--</span>
+      <div class="voice-row">
+        <button type="button" id="voice-btn">🎤 Speak an entry</button>
+        <div id="voice-status"></div>
       </div>
-      <div class="metric">
-        <span class="metric-label">Monthly Burn Rate</span>
-        <span id="burn-rate" class="metric-value">--</span>
+
+      <button type="submit" class="btn-primary">Calculate Health</button>
+    </form>
+
+    <div id="results" class="hidden">
+
+      <div class="card score-card">
+        <h2>Your Business Health</h2>
+        <div class="score-box">
+          <span id="health-score">--</span>
+          <span class="score-label">/ 100</span>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <span class="metric-label"><span id="flag-margin" class="risk-flag"></span> Profit Margin</span>
+            <span id="profit-margin" class="metric-value">--</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label"><span id="flag-burn" class="risk-flag"></span> Monthly Burn Rate</span>
+            <span id="burn-rate" class="metric-value">--</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label"><span id="flag-runway" class="risk-flag"></span> Cash Runway</span>
+            <span id="cash-runway" class="metric-value">--</span>
+          </div>
+        </div>
+
+        <button type="button" id="pdf-export-btn" class="btn-secondary">📄 Download PDF Report</button>
       </div>
-      <div class="metric">
-        <span class="metric-label">Cash Runway</span>
-        <span id="cash-runway" class="metric-value">--</span>
+
+      <div class="card">
+        <h2>Action Checklist</h2>
+        <button type="button" id="checklist-generate-btn" class="btn-secondary">Generate Action Checklist</button>
+        <div id="checklist-progress"></div>
+        <div id="checklist-output"></div>
       </div>
+
+      <div id="benchmark-box"></div>
+
+      <div class="card">
+        <h2>What-If Simulator</h2>
+        <div class="simulator-box">
+          <label>
+            Revenue change: <span id="sim-revenue-label">0%</span>
+            <input type="range" id="sim-revenue-slider" min="-50" max="50" value="0">
+          </label>
+          <label>
+            Expense change: <span id="sim-expense-label">0%</span>
+            <input type="range" id="sim-expense-slider" min="-50" max="50" value="0">
+          </label>
+          <div id="simulator-output"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>AI Diagnostic</h2>
+        <button type="button" id="ai-diagnostic-btn" class="btn-secondary">Get AI Diagnostic</button>
+        <div id="ai-diagnostic-output"></div>
+      </div>
+
+      <div class="card">
+        <h2>Ask the AI-CFO</h2>
+        <div id="chat-window"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Ask a follow-up question...">
+          <button type="button" id="chat-send-btn" class="btn-secondary">Send</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Goal Planner</h2>
+        <div class="goal-planner">
+          <label>
+            I want this many months of runway:
+            <input type="number" id="goal-runway" min="1" value="6">
+          </label>
+          <button type="button" id="goal-calculate-btn" class="btn-secondary">Calculate What I Need</button>
+          <div id="goal-result"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Expense Breakdown</h2>
+        <canvas id="expense-chart"></canvas>
+      </div>
+
+      <div class="card">
+        <h2>Trend Over Time</h2>
+        <canvas id="trend-chart"></canvas>
+      </div>
+
+      <div class="card">
+        <h2>History</h2>
+        <div id="history-list"></div>
+      </div>
+
     </div>
 
-    <button type="button" id="pdf-export-btn">📄 Download PDF Report</button>
-
-    <h2>Action Checklist</h2>
-    <button type="button" id="checklist-generate-btn">Generate Action Checklist</button>
-    <div id="checklist-progress"></div>
-    <div id="checklist-output"></div>
-
-    <div id="benchmark-box"></div>
-
-    <h2>What-If Simulator</h2>
-    <div class="simulator-box">
-      <label>
-        Revenue change: <span id="sim-revenue-label">0%</span>
-        <input type="range" id="sim-revenue-slider" min="-50" max="50" value="0">
-      </label>
-      <label>
-        Expense change: <span id="sim-expense-label">0%</span>
-        <input type="range" id="sim-expense-slider" min="-50" max="50" value="0">
-      </label>
-      <div id="simulator-output"></div>
-    </div>
-
-    <h2>AI Diagnostic</h2>
-    <button type="button" id="ai-diagnostic-btn">Get AI Diagnostic</button>
-    <div id="ai-diagnostic-output"></div>
-
-    <h2>Ask the AI-CFO</h2>
-    <div id="chat-window"></div>
-    <div class="chat-input-row">
-      <input type="text" id="chat-input" placeholder="Ask a follow-up question, e.g. 'why is my runway short?'">
-      <button type="button" id="chat-send-btn">Send</button>
-    </div>
-
-    <h2>Goal Planner</h2>
-    <div class="goal-planner">
-      <label>
-        I want this many months of runway:
-        <input type="number" id="goal-runway" min="1" value="6">
-      </label>
-      <button type="button" id="goal-calculate-btn">Calculate What I Need</button>
-      <div id="goal-result"></div>
-    </div>
-
-    <h2>Expense Breakdown</h2>
-    <canvas id="expense-chart"></canvas>
-
-    <h2>Trend Over Time</h2>
-    <canvas id="trend-chart"></canvas>
-
-    <h2>History</h2>
-    <div id="history-list"></div>
   </div>
 
   <script src="script.js"></script>

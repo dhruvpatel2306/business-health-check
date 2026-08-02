@@ -638,6 +638,33 @@ function displayResults(metrics) {
   } else {
     cashRunwayEl.textContent = 'Not applicable';
   }
+
+  setRiskFlag('flag-margin', getMarginRisk(parseFloat(metrics.profitMargin)));
+  setRiskFlag('flag-burn', getBurnRisk(metrics.isBurning));
+  setRiskFlag('flag-runway', getRunwayRisk(metrics.runwayMonths !== null ? parseFloat(metrics.runwayMonths) : null));
+}
+
+function getMarginRisk(margin) {
+  if (margin < 0) return 'red';
+  if (margin < 10) return 'amber';
+  return 'green';
+}
+
+function getBurnRisk(isBurning) {
+  return isBurning ? 'amber' : 'green';
+}
+
+function getRunwayRisk(runwayMonths) {
+  if (runwayMonths === null) return 'green';
+  if (runwayMonths < 3) return 'red';
+  if (runwayMonths < 6) return 'amber';
+  return 'green';
+}
+
+function setRiskFlag(elementId, riskLevel) {
+  const el = document.getElementById(elementId);
+  const icons = { green: '🟢', amber: '🟡', red: '🔴' };
+  el.textContent = icons[riskLevel] || '';
 }
 
 function displayBenchmark(businessType, profitMargin) {
@@ -741,8 +768,23 @@ function renderTrendChart() {
     },
     options: {
       responsive: true,
-      plugins: { legend: { position: 'top' } },
-      scales: { y: { beginAtZero: true } }
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { color: '#4a3f35' }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { color: '#7a6a58' },
+          grid: { color: 'rgba(168, 112, 47, 0.1)' }
+        },
+        x: {
+          ticks: { color: '#7a6a58' },
+          grid: { color: 'rgba(168, 112, 47, 0.1)' }
+        }
+      }
     }
   });
 }
@@ -776,7 +818,12 @@ function renderExpenseChart() {
     },
     options: {
       responsive: true,
-      plugins: { legend: { position: 'right' } }
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: { color: '#4a3f35' }
+        }
+      }
     }
   });
 }
