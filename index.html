@@ -5,6 +5,8 @@
   <title>Business Health Check</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://js.puter.com/v2/"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -62,6 +64,16 @@
       <input type="number" id="cash-balance" min="0" required>
     </label>
 
+    <label>
+      Notes (customer complaints, concerns, anything relevant)
+      <textarea id="notes" rows="3" placeholder="Optional notes..."></textarea>
+    </label>
+
+    <div class="voice-row">
+      <button type="button" id="voice-btn">🎤 Speak an entry (e.g. "20000 rent", "note customer complained about delays")</button>
+      <div id="voice-status"></div>
+    </div>
+
     <button type="submit">Calculate Health</button>
   </form>
 
@@ -88,7 +100,48 @@
       </div>
     </div>
 
+    <button type="button" id="pdf-export-btn">📄 Download PDF Report</button>
+
+    <h2>Action Checklist</h2>
+    <button type="button" id="checklist-generate-btn">Generate Action Checklist</button>
+    <div id="checklist-progress"></div>
+    <div id="checklist-output"></div>
+
     <div id="benchmark-box"></div>
+
+    <h2>What-If Simulator</h2>
+    <div class="simulator-box">
+      <label>
+        Revenue change: <span id="sim-revenue-label">0%</span>
+        <input type="range" id="sim-revenue-slider" min="-50" max="50" value="0">
+      </label>
+      <label>
+        Expense change: <span id="sim-expense-label">0%</span>
+        <input type="range" id="sim-expense-slider" min="-50" max="50" value="0">
+      </label>
+      <div id="simulator-output"></div>
+    </div>
+
+    <h2>AI Diagnostic</h2>
+    <button type="button" id="ai-diagnostic-btn">Get AI Diagnostic</button>
+    <div id="ai-diagnostic-output"></div>
+
+    <h2>Ask the AI-CFO</h2>
+    <div id="chat-window"></div>
+    <div class="chat-input-row">
+      <input type="text" id="chat-input" placeholder="Ask a follow-up question, e.g. 'why is my runway short?'">
+      <button type="button" id="chat-send-btn">Send</button>
+    </div>
+
+    <h2>Goal Planner</h2>
+    <div class="goal-planner">
+      <label>
+        I want this many months of runway:
+        <input type="number" id="goal-runway" min="1" value="6">
+      </label>
+      <button type="button" id="goal-calculate-btn">Calculate What I Need</button>
+      <div id="goal-result"></div>
+    </div>
 
     <h2>Expense Breakdown</h2>
     <canvas id="expense-chart"></canvas>
