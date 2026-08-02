@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Business Health Check</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <h1>Business Health Check</h1>
+
+  <form id="metrics-form">
+    <label>
+      Month Label (e.g. "January 2026")
+      <input type="text" id="month-label" placeholder="January 2026" required>
+    </label>
+
+    <label>
+      Business Type
+      <select id="business-type" required>
+        <option value="">Select type</option>
+        <option value="retail">Retail</option>
+        <option value="saas">SaaS / Software</option>
+        <option value="restaurant">Restaurant / Food</option>
+        <option value="services">Professional Services</option>
+      </select>
+    </label>
+
+    <label>
+      Monthly Revenue (₹)
+      <input type="number" id="revenue" min="0" required>
+    </label>
+
+    <fieldset>
+      <legend>Monthly Expenses by Category (₹)</legend>
+      <label>
+        Rent
+        <input type="number" id="exp-rent" min="0" value="0">
+      </label>
+      <label>
+        Salaries
+        <input type="number" id="exp-salaries" min="0" value="0">
+      </label>
+      <label>
+        Marketing
+        <input type="number" id="exp-marketing" min="0" value="0">
+      </label>
+      <label>
+        Other
+        <input type="number" id="exp-other" min="0" value="0">
+      </label>
+    </fieldset>
+
+    <label>
+      Outstanding Receivables (₹)
+      <input type="number" id="receivables" min="0" required>
+    </label>
+
+    <label>
+      Current Cash Balance (₹)
+      <input type="number" id="cash-balance" min="0" required>
+    </label>
+
+    <button type="submit">Calculate Health</button>
+  </form>
+
+  <div id="results" class="hidden">
+    <h2>Your Business Health</h2>
+
+    <div class="score-box">
+      <span id="health-score">--</span>
+      <span class="score-label">/ 100</span>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric">
+        <span class="metric-label">Profit Margin</span>
+        <span id="profit-margin" class="metric-value">--</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Monthly Burn Rate</span>
+        <span id="burn-rate" class="metric-value">--</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Cash Runway</span>
+        <span id="cash-runway" class="metric-value">--</span>
+      </div>
+    </div>
+
+    <div id="benchmark-box"></div>
+
+    <h2>Expense Breakdown</h2>
+    <canvas id="expense-chart"></canvas>
+
+    <h2>Trend Over Time</h2>
+    <canvas id="trend-chart"></canvas>
+
+    <h2>History</h2>
+    <div id="history-list"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
